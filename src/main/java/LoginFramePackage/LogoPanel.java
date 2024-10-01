@@ -18,15 +18,21 @@ public class LogoPanel extends javax.swing.JPanel {
     }
     @Override
     public void paintComponent(Graphics grphcs){
+        super.paintComponent(grphcs); // Gọi super để vẽ các thành phần cơ bản của JPanel
+        
+        // Đặt ảnh nền
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("big_icon.png"));
+            // Đường dẫn tới ảnh trong thư mục resources/images
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("images/big_icon.png"));
         } catch (IOException ex) {
             Logger.getLogger(LogoPanel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        super.paintComponent(grphcs);
-        grphcs.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        
+        // Vẽ ảnh lên JPanel
+        if (image != null) {
+            grphcs.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        }
     }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

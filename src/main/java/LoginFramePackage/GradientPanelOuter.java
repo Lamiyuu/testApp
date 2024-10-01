@@ -17,16 +17,23 @@ public class GradientPanelOuter extends javax.swing.JPanel {
     }
     @Override
     public void paintComponent(Graphics grphcs){
-        //Set ảnh nền 
+        super.paintComponent(grphcs); // Gọi super để vẽ các thành phần cơ bản của JPanel
+
+        // Set ảnh nền
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("ke_toan.jpg"));
+            // Đường dẫn tới ảnh trong thư mục resources/images
+            image = ImageIO.read(getClass().getClassLoader().getResourceAsStream("images/ke_toan.jpg"));
         } catch (IOException ex) {
             Logger.getLogger(GradientPanelOuter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        super.paintComponent(grphcs);
-        grphcs.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-    }
 
+        // Vẽ ảnh lên JPanel
+        if (image != null) {
+            grphcs.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

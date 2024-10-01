@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.Color;
 import java.awt.Toolkit;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -22,7 +23,8 @@ public class LoginFrame extends javax.swing.JFrame {
         //Set nền và icon cho chương trình
         setLocationRelativeTo(null);
         setBackground(new Color(255,255,255,255));
-        setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("big_icon.png")));
+        URL iconUrl = getClass().getResource("/images/big_icon.png");
+        setIconImage(Toolkit.getDefaultToolkit().getImage(iconUrl));
     }
 
     
@@ -44,6 +46,7 @@ public class LoginFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         jButtonDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonDangNhap.setForeground(new java.awt.Color(0, 153, 153));
@@ -195,62 +198,61 @@ public class LoginFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDangNhapActionPerformed
-        String LoginName, Password, query, passDb = null;
-        int notFound = 0; 
-        
-    
-        
-        try{
-            Connection con = DatabasePackage.DatabaseConnection.getConnection();
-            if( con == null){
-                throw new Exception("Không thể kết nối cơ sở dữ liệu");
-            }
-            
-            Statement st = con.createStatement();
-            if ("".equals(jTextFieldTenTaiKhoan.getText())) {
-            JOptionPane.showMessageDialog(new JFrame(), "Login Name is required", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } else if ("".equals(jTextFieldMatKhau.getText())) {
-            JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } else {
-            LoginName = jTextFieldTenTaiKhoan.getText();
-            Password = jTextFieldMatKhau.getText();
-
-            query = "SELECT * FROM user WHERE login_name = '" + LoginName + "'";
-            ResultSet rs = (ResultSet) st.executeQuery(query);
-
-            while (rs.next()) {
-                passDb = rs.getString("password");
-                notFound = 1;
-            }
-
-            if (notFound == 1 && Password.equals(passDb)) {
-                Home HomeFrame = new Home();
-                HomeFrame.setVisible(true);
-                HomeFrame.pack();
-                HomeFrame.setLocationRelativeTo(null);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(new JFrame(), "INCORRECT LOGIN NAME OR PASSWORD", "Error",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-
-            jTextFieldMatKhau.setText("");
-        }
-        }catch(Exception e){
-            logger.log(Level.SEVERE, "Đã xảy ra lỗi trong quá trình đăng nhập", e);
-        }
-    }//GEN-LAST:event_jButtonDangNhapActionPerformed
-
     private void jButtonDangKiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDangKiActionPerformed
-        RegisterFrame SignUpFrame = new RegisterFrame(); 
+        RegisterFrame SignUpFrame = new RegisterFrame();
         SignUpFrame.setVisible(true);
         SignUpFrame.pack();
         this.dispose();
     }//GEN-LAST:event_jButtonDangKiActionPerformed
 
+    private void jButtonDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDangNhapActionPerformed
+        String LoginName, Password, query, passDb = null;
+        int notFound = 0;
+
+        try{
+            Connection con = DatabasePackage.DatabaseConnection.getConnection();
+            if( con == null){
+                throw new Exception("Không thể kết nối cơ sở dữ liệu");
+            }
+
+            Statement st = con.createStatement();
+            if ("".equals(jTextFieldTenTaiKhoan.getText())) {
+                JOptionPane.showMessageDialog(new JFrame(), "Login Name is required", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            } else if ("".equals(jTextFieldMatKhau.getText())) {
+                JOptionPane.showMessageDialog(new JFrame(), "Password is required", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            } else {
+                LoginName = jTextFieldTenTaiKhoan.getText();
+                Password = jTextFieldMatKhau.getText();
+
+                query = "SELECT * FROM user WHERE login_name = '" + LoginName + "'";
+                ResultSet rs = (ResultSet) st.executeQuery(query);
+
+                while (rs.next()) {
+                    passDb = rs.getString("password");
+                    notFound = 1;
+                }
+
+                if (notFound == 1 && Password.equals(passDb)) {
+                    Home HomeFrame = new Home();
+                    HomeFrame.setVisible(true);
+                    HomeFrame.pack();
+                    HomeFrame.setLocationRelativeTo(null);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(new JFrame(), "INCORRECT LOGIN NAME OR PASSWORD", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                }
+
+                jTextFieldMatKhau.setText("");
+            }
+        }catch(Exception e){
+            logger.log(Level.SEVERE, "Đã xảy ra lỗi trong quá trình đăng nhập", e);
+        }
+    }//GEN-LAST:event_jButtonDangNhapActionPerformed
+                                           
+    
     
     public static void main(String args[]) {
         
